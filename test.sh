@@ -5,15 +5,15 @@ VOLUME_NAME="secrets-store-inline"
 MOUNT_PATH="/mnt/secrets-store"
 SECRET_NAME="demo-secret"
 SECRET_ALIAS="demo_alias"
-rg_name="rg-451vvb"
-aks_cluster_name="aks-451vvb"
 aad_pod_id_binding_selector="aad-pod-id-binding-selector"
-key_vault_name="kv-451vvb"
-tenant_id="72f988bf-86f1-41af-91ab-2d7cd011db47"
-sub_id="b7850030-db6f-4bce-8f14-f56820faa1aa"
+rg_name=""
+aks_cluster_name=""
+key_vault_name=""
+tenant_id=""
+sub_id=""
 SECRET_VALUE="demo-value"
 
-#az aks get-credentials -g $rg_name -n $aks_cluster_name --overwrite-existing
+az aks get-credentials -g $rg_name -n $aks_cluster_name --overwrite-existing
 
 #Deploy SecretProviderClass
 read -r -d '' Secret_Prov_YAML << EOM
@@ -83,7 +83,7 @@ kubectl exec -i $POD_NAME -- ls $MOUNT_PATH
 
 ACTUAL_VALUE=$(kubectl exec -i $POD_NAME -- cat $MOUNT_PATH/$SECRET_ALIAS)
 
-#kubectl delete pod $POD_NAME
+kubectl delete pod $POD_NAME
 
 if [ "$SECRET_VALUE" == "$ACTUAL_VALUE" ]; then
     echo "AKS - Key Vault test passed - secret: $ACTUAL_VALUE"
